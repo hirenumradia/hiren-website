@@ -6,21 +6,18 @@ publish_mode: editorial_workflow
 media_folder: "public/images/uploads" # Media files will be stored in the repo under images/uploads
 public_folder: "/images/uploads" # The src attribute for uploaded media will begin with /images/uploads
 collections:
-  - name: posts
-    files:
-      - name: "post"
-        label: "Post"
-        file: "_collections/posts/home.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Publish Date", name: "date", widget: "datetime" }
-          - { label: "Body", name: "body", widget: "markdown" }
-          - label: "Cats"
-            name: "cats"
-            widget: list
-            fields:
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
-    create: true
-
+  - name: post
     label: "Post"
+    folder: "_collections/posts/"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Cats"
+        name: "cats"
+        widget: list
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+    create: true
+    delete: false
