@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { Component } from 'react'
-import { attributes, react as HomeContent } from '../_collections/posts/home.md';
+import { attributes, react as HomeContent } from '../_collections/posts/oxie.md';
 
 export default class Home extends Component {
   render() {
