@@ -1,3 +1,4 @@
+import { Heading, Box, Main } from "grommet";
 import Head from "next/head"
 import { Component } from 'react'
 import { attributes, react as HomeContent } from '../_collections/posts/oxie.md';
@@ -10,18 +11,18 @@ export default class Home extends Component {
         <Head>
           <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         </Head>
-        <article>
-          <h1>{title}</h1>
+        <Main pad="large">
+          <Heading size="xxlarge">{title}</Heading>
           <HomeContent />
-          <ul>
+          <Box>
             {cats.map((cat, k) => (
-              <li key={k}>
-                <h2>{cat.name}</h2>
+              <Box key={k}>
+                <Heading size="xlarge">{cat.name}</Heading>
                 <p>{cat.description}</p>
-              </li>
+              </Box>
             ))}
-          </ul>
-        </article>
+          </Box>
+        </Main>
       </>
     )
   }
