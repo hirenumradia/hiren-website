@@ -1,18 +1,17 @@
 import { Heading, Box, Main } from "grommet";
 import Head from "next/head"
+
 import { Component } from 'react'
-import { attributes, react as HomeContent } from '../_collections/posts/oxie.md';
+import { attributes, react as HomeContent } from '../../_collections/posts/oxie.md';
 
 export default class Home extends Component {
   render() {
     let { title, cats } = attributes;
     return (
       <>
-        <Head>
-          <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        </Head>
+        <Head />
         <Main pad="large">
-          <Heading size="xxlarge">{title}</Heading>
+          <Heading size="xxxlarge">{title}</Heading>
           <HomeContent />
           <Box>
             {cats.map((cat, k) => (

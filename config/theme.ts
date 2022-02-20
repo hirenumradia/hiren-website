@@ -104,7 +104,7 @@ export const theme = {
       },
     },
     font: {
-      family: "Titillium Web, sans-serif",
+      family: "'Titillium Web', sans-serif",
       height: "1.3rem",
       size: "1rem",
     },
@@ -142,14 +142,14 @@ export const theme = {
     },
   },
   font: {
-    family: "Titillium Web, sans-serif",
+    family: "'Titillium Web', sans-serif",
     height: "1.3rem",
     maxWidth: "432px",
     size: "1rem",
   },
   heading: {
     font: {
-      family: "Play, sans-serif",
+      family: "'Play', sans-serif",
     },
     level: {
       "1": {
