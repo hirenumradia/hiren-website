@@ -5,17 +5,26 @@ import { Component, useMemo, useRef, useState, Suspense } from "react";
 import { BufferAttribute, BufferGeometry, TextureLoader } from "three";
 
 export default function Shader(props: JSX.IntrinsicElements["mesh"]) {
+  const starDistance: number = 250;
+  const starQuantity: number = 1250;
+  const distance: number = 1000;
+
+  const [verticies, velocities, accelerations] = useMemo(() => {
+    let verticies = [];
+    let velocities = [];
+    let accelerations = [];
+
+    for (let i = 0; i < starQuantity; i++) {
+      verticies.push(starDistance - Math.random() * starDistance * 2);
+      verticies.push(starDistance - Math.random() * starDistance * 2);
+      verticies.push(-1 * distance * Math.random());
+      velocities.push(0);
+      accelerations.push(Math.random() * 0.0002);
+    }
+    return [new Float32Array(verticies), velocities, accelerations];
+  }, [starQuantity]);
+
   const meshRef = useRef<THREE.Mesh>(null!);
-
-  const vertices = [];
-
-  for (let i = 0; i < 10000; i++) {
-    const x = THREE.MathUtils.randFloatSpread(2000);
-    const y = THREE.MathUtils.randFloatSpread(2000);
-    const z = THREE.MathUtils.randFloatSpread(2000);
-
-    vertices.push(x, y, z);
-  }
 
   const pointsRef = useRef<THREE.BufferGeometry>(null!);
 
@@ -23,20 +32,36 @@ export default function Shader(props: JSX.IntrinsicElements["mesh"]) {
 
   const [hovered, hover] = useState(false);
   const [clicked, click] = useState(false);
-  useFrame((state, delta) => (meshRef.current.rotation.x += 0.01));
 
-  const starDistance: number = 250;
-  const starQuantity: number = 1250;
+  useFrame((state, delta) => {
+    meshRef.current.rotation.x += 0.01;
 
-  const [positions] = useMemo(() => {
-    let positions = [];
-    for (let i = 0; i < starQuantity; i++) {
-      positions.push(starDistance - Math.random() * starDistance * 2);
-      positions.push(starDistance - Math.random() * starDistance * 2);
-      positions.push(starDistance - Math.random() * starDistance * 2);
+    const positionAttribute = pointsRef.current.getAttribute("position");
+
+    // console.log("Before Z", positionAttribute);
+
+    for (let i = 0; i < positionAttribute.count; i++) {
+      let z = positionAttribute.getZ(i);
+
+      let vel = velocities[i];
+
+      let accel = accelerations[i];
+
+      vel += accel;
+      velocities[i] = vel;
+
+      z += vel;
+
+      if (z >= 0) {
+        velocities[i] = 0;
+        z = -1 * distance * Math.random();
+      }
+
+      positionAttribute.setZ(i, z);
     }
-    return [new Float32Array(positions)];
-  }, [starQuantity]);
+
+    positionAttribute.needsUpdate = true;
+  });
 
   return (
     <>
@@ -49,14 +74,14 @@ export default function Shader(props: JSX.IntrinsicElements["mesh"]) {
         onPointerOut={(event) => hover(false)}
       >
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? "pink" : "orange"} />
+        <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
       </mesh>
       <points>
         <bufferGeometry attach="geometry" ref={pointsRef}>
           <bufferAttribute
             attachObject={["attributes", "position"]}
-            count={positions.length / 3}
-            array={positions}
+            count={verticies.length / 3}
+            array={verticies}
             itemSize={3}
           ></bufferAttribute>
         </bufferGeometry>
